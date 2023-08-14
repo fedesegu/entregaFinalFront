@@ -1,11 +1,16 @@
+//Aclaraciones de consignas: 
+// 1) Arregle el boton de resetear;  2) Le sume la funcion mostrar error para que se tenga que ingresar valores mayores a 1; 3) le agregue un spread operator en la funcion contador; 4)agregue una funcion asincrona; 5) Agregue boton para sumar edades(hay que sintetizarlo en funciones)
+
+//Faltaria como consigna:
+// Consumir alguna libreria como Sweet alert capaz para el error 
+
+
 let edad;
 let edades = [];
 let arraypersonas = [];
-let sumaEdadesMayores = 0;
-let sumaEdadesMenores = 0;
 let personas = 0;
 let resultado = 0;
-let nuevoIngreso = false;
+
 
 
 
@@ -40,7 +45,7 @@ let $submitButton = document.getElementById('button1');
   })};
 
 
-let $resetButton = document.getElementById('button2');
+let $resetButton = document.getElementById('button3');
   
 $resetButton.addEventListener('click', function(e) {
 localStorage.clear();
@@ -50,7 +55,6 @@ let $promediovalue = document.getElementById("promediovalue");
 $promediovalue.innerHTML = 0;
 arraypersonaspersonas = [];
 edades = [];
-
 });
 
 contador(edad);
@@ -67,18 +71,34 @@ const mostrarError = (error) => {
         $mensajeError.remove() //para borrarlo del DOM 
     }, 3000)
   }
-let edadesApi = [];
+let $edadesApi = document.getElementById('button2')
 
 const api = async () =>{
   const resp = await fetch ("https://jsonplaceholder.typicode.com/users");
   const data = await resp.json();
   
-  data.forEach(({name})=> {
-    edadesApi.push(name);
+    $edadesApi.addEventListener('click', function(e){
+    data.forEach(({id})=> {
+      edades.push(id);
+      arraypersonas.push([...data]); 
+      let array = JSON.stringify(edades);
+      localStorage.setItem("Edades", array);
+      localStorage.setItem("Personas", edades.length);
+      let total = [...edades].reduce((a, b) => Number(a) + Number(b), 0);
+      localStorage.setItem("Total", total);
+      let promedio = total/edades.length;
+      document.getElementById("edad").value = "";
+
+      let $contenido = document.getElementById("contenido");
+      $contenido.innerHTML = (Math.ceil(edades.length)) + " personas han sido agregadas";
+
+      let $promediovalue = document.getElementById("promediovalue");
+      $promediovalue.innerHTML = (Math.ceil(promedio)) + " Es la edad promedio entre todos los resultados";
   })
+ })
 }
 // }
-// api();
+api();
 // console.log(edadesApi)
 
 // let sumarEdadesApi = (edadesApi) => {
