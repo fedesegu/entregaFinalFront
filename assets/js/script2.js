@@ -25,7 +25,7 @@ let $submitButton = document.getElementById('button1');
       let array = JSON.stringify(edades);
       localStorage.setItem("Edades", array);
       localStorage.setItem("Personas", edades.length);
-      let total = edades.reduce((a, b) => Number(a) + Number(b), 0);
+      let total = [...edades].reduce((a, b) => Number(a) + Number(b), 0);
       localStorage.setItem("Total", total);
       let promedio = total/edades.length;
       document.getElementById("edad").value = "";
@@ -67,20 +67,24 @@ const mostrarError = (error) => {
         $mensajeError.remove() //para borrarlo del DOM 
     }, 3000)
   }
-  
+let edadesApi = [];
 
 const api = async () =>{
-  const resp = await fetch ("https://jsonplaceholder.typicode.com/users")
-  const data = await resp.json()
+  const resp = await fetch ("https://jsonplaceholder.typicode.com/users");
+  const data = await resp.json();
   
   data.forEach(({name})=> {
-    console.log(name)
-  });
- 
-
-  // data.forEach((data) => { //destructurando
-  //   console.log(data)
-  // });
-
+    edadesApi.push(name);
+  })
 }
-api();
+// }
+// api();
+// console.log(edadesApi)
+
+// let sumarEdadesApi = (edadesApi) => {
+// edadesApi.reduce((a, b) => Number(a) + Number(b), 0);
+ 
+// }
+
+// console.log(sumarEdadesApi(edadesApi));
+// habria que meter algo de spread operator
