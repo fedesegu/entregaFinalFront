@@ -1,5 +1,7 @@
-//Aclaraciones de consignas: 
-// 1) Arregle el boton de resetear;  2) Le sume la funcion mostrar error para que se tenga que ingresar valores mayores a 1; 3) le agregue un spread operator en la funcion contador; 4)agregue una funcion asincrona; 5) Agregue boton para sumar edades(hay que sintetizarlo en funciones)
+//Aclaraciones de consignas requeridas: 
+// 1) Arregle el boton de resetear;  2) Le sume la funcion mostrar error (usando el operador ternario ? y :, que tambien es consigna) para que se tenga que ingresar valores mayores a 1; 3) le agregue un spread operator en la funcion contador; 4)agregue una funcion asincrona; 5) Agregue boton para sumar edades. 6) Agregue destructuracion con el id (que despues hay que reemplazarlo por edades de api), en la funcion asincrona
+
+//No consigna pero buena practica: las variables relacionadas con elementos del DOM (como las vinculadas a botones, se inician con $)
 
 //Faltaria como consigna:
 // Consumir alguna libreria como Sweet alert capaz para el error 
@@ -11,22 +13,8 @@ let arraypersonas = [];
 let personas = 0;
 let resultado = 0;
 
-
-
-
-let $submitButton = document.getElementById('button1');
-
-
-    
-    function contador(){
-    $submitButton.addEventListener('click', function(e) {
-      
-      
-      let $boxvalue = document.getElementById('edad').value;
-      $boxvalue = "" ? mostrarError ("Tienes que ingresar un número positivo mayor a 1") : isNaN ($boxvalue) ? mostrarError ("Tienes que ingresar un número positivo mayor a 1") : $boxvalue < 1 ? mostrarError("Tienes que ingresar un número positivo mayor a 1") : edades.push($boxvalue);
-
-      
-      arraypersonas.push("1"); 
+function contador (x) {
+      arraypersonas.push(x); 
       let array = JSON.stringify(edades);
       localStorage.setItem("Edades", array);
       localStorage.setItem("Personas", edades.length);
@@ -40,7 +28,21 @@ let $submitButton = document.getElementById('button1');
 
       let $promediovalue = document.getElementById("promediovalue");
       $promediovalue.innerHTML = (Math.ceil(promedio)) + " Es la edad promedio entre todos los resultados";
+}
 
+
+let $submitButton = document.getElementById('button1');
+
+
+    
+    function agregarEdadManual(){
+    $submitButton.addEventListener('click', function(e) {
+      
+      
+      let $boxvalue = document.getElementById('edad').value;
+      $boxvalue = "" ? mostrarError ("Tienes que ingresar un número positivo mayor a 1") : isNaN ($boxvalue) ? mostrarError ("Tienes que ingresar un número positivo mayor a 1") : $boxvalue < 1 ? mostrarError("Tienes que ingresar un número positivo mayor a 1") : edades.push($boxvalue);
+
+      contador(1);
      
   })};
 
@@ -57,7 +59,7 @@ arraypersonaspersonas = [];
 edades = [];
 });
 
-contador(edad);
+agregarEdadManual(edad);
 
 const mostrarError = (error) => {
     const $mensajeError = document.createElement("p")
@@ -80,20 +82,7 @@ const api = async () =>{
     $edadesApi.addEventListener('click', function(e){
     data.forEach(({id})=> {
       edades.push(id);
-      arraypersonas.push([...data]); 
-      let array = JSON.stringify(edades);
-      localStorage.setItem("Edades", array);
-      localStorage.setItem("Personas", edades.length);
-      let total = [...edades].reduce((a, b) => Number(a) + Number(b), 0);
-      localStorage.setItem("Total", total);
-      let promedio = total/edades.length;
-      document.getElementById("edad").value = "";
-
-      let $contenido = document.getElementById("contenido");
-      $contenido.innerHTML = (Math.ceil(edades.length)) + " personas han sido agregadas";
-
-      let $promediovalue = document.getElementById("promediovalue");
-      $promediovalue.innerHTML = (Math.ceil(promedio)) + " Es la edad promedio entre todos los resultados";
+      contador([...data]);
   })
  })
 }
